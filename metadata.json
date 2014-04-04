@@ -39,7 +39,7 @@
       "version_requirement": ">=2.7.0 <4.0.0"
     }
   ],
-  "author": "Dejan Golja",
+  "author": "Deryck L",
   "checksums": {
     "CHANGELOG": "d9f8cf8a127eb1d724b9af56ab3f9b2e",
     "Gemfile": "57ddf3883b4136a3b1dd98587149db53",
@@ -65,11 +65,11 @@
   "dependencies": [
 
   ],
-  "description": "Manage gnupg instalaltion and handling public keys",
+  "description": "Manage gnupg instalaltion and handling public keys\n\n(This is a mod of golja, as it is preventing me from using www-data in the user field)",
   "license": "ASL 2.0",
-  "name": "golja-gnupg",
-  "project_page": "http://github.com/n1tr0g/golja-gnupg.git",
-  "source": "git://github.com/n1tr0g/golja-gnupg.git",
+  "name": "dereklio-gnupg",
+  "project_page": "http://github.com/dereklio/golja-gnupg.git",
+  "source": "git://github.com/dereklio/golja-gnupg.git",
   "summary": "Manage gnupg package and public keys",
   "types": [
     {
@@ -111,5 +111,5 @@
       ]
     }
   ],
-  "version": "0.0.3"
+  "version": "0.0.1"
 }
