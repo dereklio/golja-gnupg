@@ -1,5 +1,5 @@
 name    'dereklio-gnupg'
-version '0.0.3-dereklio0001'
+version '0.0.4'
 source 'git://github.com/dereklio/puppet-gnupg.git'
 author 'Deryck Lio'
 license 'ASL 2.0'
