@@ -17,7 +17,7 @@ Puppet::Type.type(:gnupg_key).provide(:gnupg) do
   commands :gpg => 'gpg'
 
   def remove_public_key
-    command = "gpg --batch --yes --delete-keys #{resource[:key_id]}"
+    command = "HOME=~#{resource[:user]} gpg --batch --yes --delete-keys #{resource[:key_id]}"
     output, status = Puppet::Util::SUIDManager.run_and_capture(command,  user_id)
     if status.exitstatus != 0
       raise Puppet::Error, "Could not remove #{resource[:key_id]} for user #{resource[:user]}: #{output}"
@@ -28,7 +28,7 @@ Puppet::Type.type(:gnupg_key).provide(:gnupg) do
   # TODO implement dry-run to check if the key_id match the content of the file
   def add_public_key
     if ! resource[:key_server].nil?
-      command = "gpg --keyserver #{resource[:key_server]} --recv-keys #{resource[:key_id]}"
+      command = "HOME=~#{resource[:user]} gpg --keyserver #{resource[:key_server]} --recv-keys #{resource[:key_id]}"
       output, status = Puppet::Util::SUIDManager.run_and_capture(command,  user_id)
       if status.exitstatus != 0
         raise Puppet::Error, "Key #{resource[:key_id]} does not exsist on #{resource[:key_server]}"
@@ -37,7 +37,7 @@ Puppet::Type.type(:gnupg_key).provide(:gnupg) do
     elsif ! resource[:key_source].nil?
       if Puppet::Util.absolute_path?(resource[:key_source])
         if File.file?(resource[:key_source])
-          command = "gpg --import #{resource[:key_source]}"
+          command = "HOME=~#{resource[:user]} gpg --import #{resource[:key_source]}"
           output, status = Puppet::Util::SUIDManager.run_and_capture(command,  user_id)
            if status.exitstatus != 0
             raise Puppet::Error, "Error while importing key #{resource[:key_id]} from #{resource[:key_source]}"
@@ -49,13 +49,13 @@ Puppet::Type.type(:gnupg_key).provide(:gnupg) do
         uri = URI.parse(URI.escape(resource[:key_source]))
         case uri.scheme
           when /https?/
-            command = "gpg --fetch-keys #{resource[:key_source]}"
+            command = "HOME=~#{resource[:user]} gpg --fetch-keys #{resource[:key_source]}"
           when 'puppet'
             Puppet::Util::SUIDManager.asuser(user_id) do
               tmpfile = Tempfile.open(['golja-gnupg', 'key'])
               tmpfile.write(puppet_content)
               tmpfile.flush
-              command = "gpg --import #{tmpfile.path.to_s}"
+              command = "HOME=~#{resource[:user]} gpg --import #{tmpfile.path.to_s}"
             end
         end
         output, status = Puppet::Util::SUIDManager.run_and_capture(command,  user_id)
@@ -85,7 +85,7 @@ Puppet::Type.type(:gnupg_key).provide(:gnupg) do
   end
 
   def exists?
-    command = "gpg --list-keys --with-colons #{resource[:key_id]}"
+    command = "HOME=~#{resource[:user]} gpg --list-keys --with-colons #{resource[:key_id]}"
     output, status = Puppet::Util::SUIDManager.run_and_capture(command,  user_id)
     if status.exitstatus == 0
       return true
