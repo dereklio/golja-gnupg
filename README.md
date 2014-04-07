@@ -1,16 +1,18 @@
 #GnuPG puppet module
 
+**This is a modification of the golja/gnupg module, because it is not accepting www-data as a valid user name**
+
+I have only modified the regular expression for the validation.
+
 ##Overview
 
 Install GnuPG on Ubuntu/Debian/RedHat/CentOS/Amazon AMI and manage users public keys.
 
 Tested with Tavis CI
 
-[![Build Status](https://travis-ci.org/n1tr0g/golja-gnupg.png)](https://travis-ci.org/n1tr0g/golja-gnupg)
-
 ##Installation
 
-     $ puppet module install golja/gnupg
+     $ puppet module install dereklio/gnupg
 
 ##Usage
 
@@ -59,7 +61,7 @@ gnupg_key {'root_remove':
   key_id => '20BC0A86',
   user   => 'root',
 }
-```    
+```
 
 ###Parameters
 
@@ -83,7 +85,7 @@ Name of the GnuPG package. Default value determined by $::osfamily/$::operatings
 
 #####`user`
 
-**REQUIRED** - System username for who to store the public key. Also define the location of the 
+**REQUIRED** - System username for who to store the public key. Also define the location of the
 pubring (default ${HOME}/.gnupg/)
 
 #####`key_id`
